@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Qüestionari Cronotip</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      max-width: 700px;
+      margin: 2rem auto;
+      padding: 1rem;
+      line-height: 1.6;
+    }
+    h1 { text-align: center; }
+    .question { margin-bottom: 1.5rem; }
+    button {
+      padding: 0.6rem 1rem;
+      font-size: 1rem;
+      border: none;
+      background: #4CAF50;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    #resultat {
+      margin-top: 2rem;
+      padding: 1rem;
+      background-color: #f0f0f0;
+      border-left: 5px solid #4CAF50;
+    }
+  </style>
+</head>
+<body>
+  <h1>Qüestionari de Cronotip</h1>
+  <form id="questionnaire">
+    <div class="question">
+      <p>1. A quina hora preferiries llevar-te si poguessis triar lliurement?</p>
+      <label><input type="radio" name="q1" value="5" required> 5:00 - 6:30</label><br/>
+      <label><input type="radio" name="q1" value="4"> 6:30 - 7:45</label><br/>
+      <label><input type="radio" name="q1" value="3"> 7:45 - 9:45</label><br/>
+      <label><input type="radio" name="q1" value="2"> 9:45 - 11:00</label><br/>
+      <label><input type="radio" name="q1" value="1"> Després de les 11:00</label>
+    </div>
+    <div class="question">
+      <p>2. Com et sents normalment en els primers 30 minuts després de despertar-te?</p>
+      <label><input type="radio" name="q2" value="1" required> Molt cansat/da</label><br/>
+      <label><input type="radio" name="q2" value="2"> Bastant cansat/da</label><br/>
+      <label><input type="radio" name="q2" value="3"> Bastant despert/a</label><br/>
+      <label><input type="radio" name="q2" value="4"> Molt despert/a</label>
+    </div>
+    <div class="question">
+      <p>3. A quina hora del dia creus que tens el màxim rendiment físic?</p>
+      <label><input type="radio" name="q3" value="5" required> 8:00 - 10:00</label><br/>
+      <label><input type="radio" name="q3" value="4"> 10:00 - 13:00</label><br/>
+      <label><input type="radio" name="q3" value="3"> 13:00 - 17:00</label><br/>
+      <label><input type="radio" name="q3" value="2"> 17:00 - 21:00</label><br/>
+      <label><input type="radio" name="q3" value="1"> Després de les 21:00</label>
+    </div>
+    <div class="question">
+      <p>4. Quan et resultaria més fàcil fer exercici intens?</p>
+      <label><input type="radio" name="q4" value="4" required> 6:00 - 8:00</label><br/>
+      <label><input type="radio" name="q4" value="3"> 8:00 - 10:00</label><br/>
+      <label><input type="radio" name="q4" value="2"> 15:00 - 17:00</label><br/>
+      <label><input type="radio" name="q4" value="1"> 19:00 - 21:00</label>
+    </div>
+    <div class="question">
+      <p>5. Et consideres una persona...</p>
+      <label><input type="radio" name="q5" value="6" required> Clarament matutina</label><br/>
+      <label><input type="radio" name="q5" value="4"> Més aviat matutina</label><br/>
+      <label><input type="radio" name="q5" value="2"> Més aviat vespertina</label><br/>
+      <label><input type="radio" name="q5" value="0"> Clarament vespertina</label>
+    </div>
+    <button type="submit">Veure resultat</button>
+  </form>
+
+  <div id="resultat" style="display:none;"></div>
+
+  <script>
+    document.getElementById("questionnaire").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      let total = 0;
+      for (let i = 1; i <= 5; i++) {
+        const val = parseInt(document.querySelector('input[name="q' + i + '"]:checked').value);
+        total += val;
+      }
+
+      let tipus = "";
+      if (total >= 22) tipus = "Tipus clarament matutí (DM)";
+      else if (total >= 18) tipus = "Tipus moderadament matutí (MM)";
+      else if (total >= 12) tipus = "Tipus neutre (NT)";
+      else if (total >= 8) tipus = "Tipus moderadament vespertí (ME)";
+      else tipus = "Tipus clarament vespertí (DE)";
+
+      document.getElementById("resultat").style.display = "block";
+      document.getElementById("resultat").innerHTML = `<h3>Resultat:</h3>
+        <p><strong>Puntuació total:</strong> ${total}</p>
+        <p><strong>Classificació:</strong> ${tipus}</p><p><strong>Millor moment per a exercici terapèutic:</strong> ${tipus.includes("clarament matutí") ? "entre les 5 i les 8 del matí" : tipus.includes("moderadament matutí") ? "entre les 9 i les 11 del matí" : tipus.includes("neutre") ? "entre les 12 i les 2 de la tarda" : tipus.includes("moderadament vespertí") ? "entre les 12 i les 2 de la tarda" : "entre les 12 i les 2 de la nit"}</p>`;
+    });
+  </script>
+</body>
+</html>
